@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTROL GASTOS</title>
+    <!--ENLACES A BOOTSTRAP-->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-icons.min.css">
+
+<style>
+    .imgCategoria{
+        width: 80px;
+        height: 80px;
+        border-radius: 100%;
+        margin: auto;
+    }
+</style>
+
+</head>
+
+<body class="text-center" onload="inicio()">
+
+    <!--TÍTULO NAVBAR-->
+    <nav class="navbar" style="background-color: #af7ccc;">
+        <div class="container-fluid">
+          <h1 class="m-auto text-white">CONTROL DE GASTOS</h1>
+        </div>
+      </nav>
+
+
+      <div class="container-fluid">
+        <!--CONTENEDOR DE PRESUPUESTO INICIAL, CON INPUT Y BOTÓN DE INICIAR-->
+        <div class="card text-center w-50 m-auto mt-3 shadow p-2" id="divPresupuesto">
+           <h2 class="mt-2">PRESUPUESTO INICIAL</h2>
+           <!--INPUT DE NÚMEROS CON VALOR, MINIMO Y MÁXIMO-->
+           <input type="number"  value=0 min=0 max=100000 class="form-control w-75 m-auto my-3 text-center" id="presupuesto">
+           <button class="btn btn-primary w-75 m-auto my-3" id="btnPresupuesto">INICIAR</button>
+          </div>
+
+
+<!--DIV QUE ESTÁ OCULTO AL INICIO DE GASTOS CON PROGRESS CIRCULAR, BOTÓN RESET Y MUESTRA CANTIDADES-->
+          <div class="d-none" id="divGastos">
+            <div class="card text-center w-50 m-auto mt-3 shadow p-2"> 
+                <h2 class="mt-2">GASTOS</h2>
+                <div class="row">
+                <div class="col m-2">
+                    <div class="align-middle">     
+                        <circle-progress value="100" max="100" text-format="percent" id="progress"></circle-progress>
+                        <button class="w-75 m-auto btn btn-primary my-4" data-bs-toggle="modal" data-bs-target="#nuevoGasto">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-dotted" viewBox="0 0 16 16">
+                            <path d="M8 0q-.264 0-.523.017l.064.998a7 7 0 0 1 .918 0l.064-.998A8 8 0 0 0 8 0M6.44.152q-.52.104-1.012.27l.321.948q.43-.147.884-.237L6.44.153zm4.132.271a8 8 0 0 0-1.011-.27l-.194.98q.453.09.884.237zm1.873.925a8 8 0 0 0-.906-.524l-.443.896q.413.205.793.459zM4.46.824q-.471.233-.905.524l.556.83a7 7 0 0 1 .793-.458zM2.725 1.985q-.394.346-.74.74l.752.66q.303-.345.648-.648zm11.29.74a8 8 0 0 0-.74-.74l-.66.752q.346.303.648.648zm1.161 1.735a8 8 0 0 0-.524-.905l-.83.556q.254.38.458.793l.896-.443zM1.348 3.555q-.292.433-.524.906l.896.443q.205-.413.459-.793zM.423 5.428a8 8 0 0 0-.27 1.011l.98.194q.09-.453.237-.884zM15.848 6.44a8 8 0 0 0-.27-1.012l-.948.321q.147.43.237.884zM.017 7.477a8 8 0 0 0 0 1.046l.998-.064a7 7 0 0 1 0-.918zM16 8a8 8 0 0 0-.017-.523l-.998.064a7 7 0 0 1 0 .918l.998.064A8 8 0 0 0 16 8M.152 9.56q.104.52.27 1.012l.948-.321a7 7 0 0 1-.237-.884l-.98.194zm15.425 1.012q.168-.493.27-1.011l-.98-.194q-.09.453-.237.884zM.824 11.54a8 8 0 0 0 .524.905l.83-.556a7 7 0 0 1-.458-.793zm13.828.905q.292-.434.524-.906l-.896-.443q-.205.413-.459.793zm-12.667.83q.346.394.74.74l.66-.752a7 7 0 0 1-.648-.648zm11.29.74q.394-.346.74-.74l-.752-.66q-.302.346-.648.648zm-1.735 1.161q.471-.233.905-.524l-.556-.83a7 7 0 0 1-.793.458zm-7.985-.524q.434.292.906.524l.443-.896a7 7 0 0 1-.793-.459zm1.873.925q.493.168 1.011.27l.194-.98a7 7 0 0 1-.884-.237zm4.132.271a8 8 0 0 0 1.012-.27l-.321-.948a7 7 0 0 1-.884.237l.194.98zm-2.083.135a8 8 0 0 0 1.046 0l-.064-.998a7 7 0 0 1-.918 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                          </svg>
+                        </button>
+                    </div>
+               </div>
+               
+                <div class="col">
+                    <button class="btn btn-danger w-75 m-auto my-2" onclick="reset()">RESET</button>
+                    <p><span>Presupuesto:</span> <b id="totalPresupuesto">$0.0</b></p>
+                    <p><span>Disponible:</span> <b id="totalDisponible">$0.0</b></p>
+                    <p><span>Gastado:</span> <b id="totalGastos">$0.0</b></p>
+                </div>
+                </div>
+            </div>
+
+            <!--CARD CON SELECT PARA CATEGORÍAS-->
+                <div class="card text-center w-50 m-auto mt-3 shadow p-2">
+                    <h2 class="mt-2">CATEGORÍA</h2>
+                    <select name="categorias" class="form-control m-75 m-auto text-center" id="filtrarCategoria">
+                        <option value="todos">TODOS</option>
+                        <option value="comida">COMIDA</option>
+                        <option value="ahorro">AHORRO</option>
+                        <option value="casa">CASA</option>
+                        <option value="ocio">OCIO</option>
+                        <option value="salud">SALUD</option>
+                        <option value="varios">VARIOS</option>
+                        <option value="suscripcion">SUSCRIPCIÓN</option>
+                    </select>
+                </div>
+
+                <!--MUESTRA LOS GASTOS QUE HUBO-->
+                <div class="card text-center w-50 m-auto mt-3 shadow p-2">
+                    <h2 class="mt-2">GASTOS</h2>
+                    <div class="text-center" id="listaGastos"></div>
+                    </div>
+
+                </div>
+          </div>
+      </div>
+
+
+<!--MODAL QUE CONTIENE CAMPO PARA DESCRIPCIÓN, COSTO Y SELECT CON CATEGORÍAS DE GASTO-->
+      <div class="modal fade" id="nuevoGasto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 w-100 m-auto" id="exampleModalLabel">NUEVO GASTO</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p><label for="">DESCRIPCIÓN</label></p>
+                    <input type="text" class="form-control text-center m-auto" id="descripcion">
+                    <br>
+                    <p><label for="">COSTO</label></p>
+                    <input type="text" class="form-control text-center m-auto" id="costo">
+                    <br>
+                   <p><label for="">CATEGORÍA</label></p>
+                   <select name="categorias" class="form-control m-75 m-auto text-center" id="categoria">
+                    <option value="comida">COMIDA</option>
+                    <option value="ahorro">AHORRO</option>
+                    <option value="casa">CASA</option>
+                    <option value="ocio">OCIO</option>
+                    <option value="salud">SALUD</option>
+                    <option value="varios">VARIOS</option>
+                    <option value="suscripcion">SUSCRIPCIÓN</option>
+                </select>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                      </svg></button>
+                    <button type="button" class="btn btn-success" onclick="guardarGasto()">Guardar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy-fill" viewBox="0 0 16 16">
+                        <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
+                        <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
+                      </svg></button>
+                </div>
+            </div>
+        </div>
+    </div>
+      
+
+<!--MODAL QUE CONTIENE LOS CAMPOS ANTERIORES PERO EN ESTA OCASIÓN ES PARA EDITAR-->
+    <div class="modal fade" id="editarGasto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 w-100 m-auto" id="exampleModalLabel">NUEVO GASTO</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><label for="">DESCRIPCIÓN</label></p>
+                    <input type="text" class="form-control text-center m-auto" id="edescripcion">
+                    <br>
+                    <p><label for="">COSTO</label></p>
+                    <input type="text" class="form-control text-center m-auto" id="ecosto">
+                    <br>
+                   <p><label for="">CATEGORÍA</label></p>
+                  
+                   <select name="categorias" class="form-control m-75 m-auto text-center" id="ecategoria">
+                    <option value="comida">COMIDA</option>
+                    <option value="ahorro">AHORRO</option>
+                    <option value="casa">CASA</option>
+                    <option value="ocio">OCIO</option>
+                    <option value="salud">SALUD</option>
+                    <option value="varios">VARIOS</option>
+                    <option value="suscripcion">SUSCRIPCIÓN</option>
+                </select>
+                <input type="hidden" id="eindex">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                      </svg></button>
+                    <button type="button" class="btn btn-success" id="actualizar">Actualizar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-upload-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 0a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 4.095 0 5.555 0 7.318 0 9.366 1.708 11 3.781 11H7.5V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11h4.188C14.502 11 16 9.57 16 7.773c0-1.636-1.242-2.969-2.834-3.194C12.923 1.999 10.69 0 8 0m-.5 14.5V11h1v3.5a.5.5 0 0 1-1 0"/>
+                      </svg></button>
+                </div>
+            </div>
+        </div>
+    </div>
+      
+
+
+<!--BLOQUE QUE VINCULA LOS SCRIPTS EN HTML-->
+      <script src="assets/js/circle-progress.min.js" type="module"></script>
+      <script src="assets/js/bootstrap.bundle.js"></script>
+      <script src="assets/js/sweetalert2.all.min.js"></script>
+      <script src="assets/js/app.js"></script>
+</body>
+</html>
