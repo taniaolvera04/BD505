@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESTAURANTE LA KITTY</title>
+    <!--ENLACES A BOOTSTRAP-->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body class="text-center" onload="cargarPlatillos()">
+
+    <!--TÍTULO NAVBAR-->
+    <nav class="navbar" style="background-color: #ff4e7a;">
+        <div class="container-fluid">
+          <h1 class="m-auto w-100 text-white">RESTAURANTE "LA KITTY"</h1>
+          <img src="assets/img/kitty.png" alt="Logo" width="75" height="75" class="d-inline-block align-text-top m-auto">
+        </div>
+      </nav>
+<br>
+    
+<!---->
+<div class="card text-center w-75 m-auto mt-3 shadow p-2 height-adjusted"> 
+    <div class="row">
+        <!-- Sección MENÚ -->
+        <div class="col-md-6 mb-3">
+            <nav class="navbar" style="background-color: #ff80a0;">
+                <div class="container-fluid">
+                    <h3 class="m-auto text-white">MENÚ</h3>
+                    <img src="assets/img/pozole.jpg" height="40" width="40" style="border-radius: 100%;">
+                </div>
+            </nav>
+        </div>
+        <!-- Sección ORDEN -->
+        <div class="col-md-6 mb-3">
+            <nav class="navbar" style="background-color: #ff80a0;">
+                <div class="container-fluid">
+                    <h3 class="m-auto text-white">ORDEN</h3>
+                    <img src="assets/img/menu.png" height="40" width="35" style="border-radius: 100%;">
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Tabla -->
+        <div class="col-md-6">
+            <button class="btn1 btn-danger" data-bs-toggle="modal" data-bs-target="#nuevoItem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                </svg>
+            </button><br><br>
+
+            <table class="table">
+                <tbody id="listaPlatillos">
+
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- Mensaje NO HAY ORDEN -->
+        <div class="col-md-6">
+            <div class="list-group">
+                <div class="list-group-item list-group-item-action border-my-2">
+                    <div class="list-group" id="orden"> </div>
+                </div>
+            </div>
+<br><br>
+
+
+
+            <div class="text-center">
+                <h3 id="pr">PROPINA</h3>
+                <div class="input-group justify-content-center">
+                    <div class="input-group-text">
+                        <input class="form-check-input mx-3" type="radio" checked onclick="calcularPropina()" value="10" name="propina" id="propina" aria-label="10%">10%
+                    </div>
+
+                    <div class="input-group-text">
+                        <input class="form-check-input mx-3" type="radio" onclick="calcularPropina()" value="20" name="propina" id="propina" aria-label="20%">20%
+                    </div>
+
+                    <div class="input-group-text">
+                        <input class="form-check-input mx-3" type="radio" onclick="calcularPropina()" value="30" name="propina" id="propina" aria-label="30%">30%
+                    </div>
+                </div>
+            </div>
+            <br>
+
+
+            <div class="p-2">
+                <h4>TOTAL</h4>
+                <h4 id="s">Subtotal: $25.00</h4>
+                <h4 id="p">Propina: $2.50</h4>
+                <h4 id="t">Total: $27.50</h4>
+            </div>
+
+            <div class="row">
+                <div class="col"><button class="d-block btn btn-dark w-100" onclick="cancelar()">Cancelar</button></div>
+                <div class="col"><button class="btn btn-dark w-100" onclick="terminarP()">Guardar Orden</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--MODAL QUE CONTIENE CAMPO PARA DESCRIPCIÓN, COSTO Y SELECT CON CATEGORÍAS DE GASTO-->
+      <div class="modal fade" id="nuevoItem" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 w-100 m-auto" id="exampleModalLabel">NUEVO PLATILLO</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p><label for="">DESCRIPCIÓN</label></p>
+                    <input type="text" class="form-control text-center m-auto" id="descripcion">
+                    <br>
+                    <p><label for="">PRECIO PÚBLICO</label></p>
+                    <input type="text" class="form-control text-center m-auto" id="precio">
+                    <br>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                      </svg></button>
+                    <button type="button" class="btn btn-success" onclick="guardarItem()">Guardar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy-fill" viewBox="0 0 16 16">
+                        <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
+                        <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
+                      </svg></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+      
+
+
+<!--BLOQUE QUE VINCULA LOS SCRIPTS EN HTML-->
+      <script src="assets/js/bootstrap.bundle.js"></script>
+      <script src="assets/js/sweetalert2.all.min.js"></script>
+      <script src="assets/js/app.js"></script>
+</body>
+</html>

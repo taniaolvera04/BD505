@@ -1,0 +1,96 @@
+.height-adjusted {
+    min-height: 520px;
+}
+
+
+
+.btn1 {
+padding: 1rem 2rem;
+font-weight: 300;
+background: rgb(255, 255, 255);
+color: blueviolet;
+cursor: pointer;
+border-radius: 0.5rem;
+border-bottom: 2px solid blueviolet;
+border-right: 2px solid blueviolet;
+border-top: 2px solid rgb(255, 172, 204);
+border-left: 2px solid white;
+transition-duration: 1s;
+transition-property: border-top, border-left, border-bottom, border-right,
+box-shadow;
+}
+
+.btn1:hover {
+border-top: 2px solid blueviolet;
+border-left: 2px solid blueviolet;
+border-bottom: 2px solid rgb(238, 103, 238);
+border-right: 2px solid rgb(238, 103, 238);
+box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px,
+rgba(240, 46, 170, 0.2) 15px 15px;
+}
+
+.btn-info{
+border-radius: 48%;
+height: 45px;
+width: 90px;
+background-color: plum;
+border: 1px purple;
+color: white;
+font-weight: 500;
+text-align: center;
+}
+
+.btn-info:hover{
+background-color: rgb(149, 223, 236);
+border: 1px rgb(0, 113, 128);
+color: white;
+font-weight: 500;
+text-align: center;
+}
+
+.btn-dark{
+background-color: rgb(192, 109, 192);
+border: 1px purple;
+color: white;
+font-weight: 500;
+text-align: center;
+}
+
+.btn-dark:hover{
+background-color: rgb(245, 84, 146);
+border: 1px rgb(128, 0, 11);
+color: white;
+font-weight: 500;
+text-align: center;
+}
+
+
+
+
+#propina{
+    border: 2px solid rgb(255, 212, 219);
+}
+
+#propina:checked{
+    background: rgb(245, 120, 195);
+}
+
+#propina:focus{
+    box-shadow: 0 0 0 0.2rem rgba(249, 87, 255, 0.5);
+}
+
+#t{
+    color: rgb(145, 60, 145);
+}
+
+#p{
+    color: rgb(30, 168, 111);
+}
+
+#s{
+    color: rgb(58, 156, 173);
+}
+
+#pr{
+    color: rgb(194, 67, 120);
+}
