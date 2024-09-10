@@ -3,46 +3,46 @@ require_once "config.php";
 header('Content-Type: text/html; charset=utf-8');
 $valido['success']=array('success'=>false,'mensaje'=>"");
 
-if($_SERVER['REQUEST_METHOD']==='POST'){
+if($_SERVER['REQUEST_METHOD']==='POST'){ //Verifica que se haya recibido una respuesta del servidor
 
-$action=$_POST['action'];
+ $action=$_REQUEST['action'];
+//Recibe valor de variable encapsulada "action"
 
-
-if($action==='add'){
-
-    if($_POST){
+switch($action){
+    case "add":
     
-    $a=$_POST['descripcion'];
-    $b=$_POST['costo'];
-    $c = $_POST['categoria'];
+    $a=$_POST['descripcion']; //Recupera valor de descripción
+    $b=$_POST['costo']; //Recupera valor de costo
+    $c = $_POST['categoria']; //Recupera valor de categoría
 
     $sqlCategoria ="SELECT id_c FROM categoria WHERE categoria = '$c'";
+    //Realiza una consulta en tabla categoria para recuperar el "id_c" cuando categoría sea valor de "$c" 
+
     $resultCategoria = $cx->query($sqlCategoria);
+    //Conexion con consulta en BD
 
     $row = $resultCategoria->fetch_assoc();
-    $id_c = $row['id_c'];
+    $id_c = $row['id_c']; //$id_C tomará valor de "id_c"
 
-    $sql="INSERT INTO control VALUES (null,'$a','$b', '$id_c')";
-    if($cx->query($sql)){
+    $sql="INSERT INTO control VALUES (null,'$a','$b', '$id_c')"; //Hecho esto se puede insertar en tabla control
+    if($cx->query($sql)){ //Si se establece conexión entonces
        $valido['success']=true;
-       $valido['mensaje']="SE GUARDÓ CORRECTAMENTE";
-    }else{
-        $valido['success']=false;
+       $valido['mensaje']="SE GUARDÓ CORRECTAMENTE"; //Mostrar mensaje de éxito
+    }else{ //sino
+        $valido['success']=false; //Mostrar mensaje de error
        $valido['mensaje']="ERROR AL GUARDAR EN BD"; 
     }
     
-}else{
-$valido['success']=false;
-$valido['mensaje']="ERROR AL GUARDAR";
-}
 
 echo json_encode($valido);
 
-} elseif($action==='selectAll'){
+break;
+
+case "selectAll"://si valor de action es "selectAll"
 
     $sql = "SELECT co.id, co.descripcion, co.costo, c.categoria 
     FROM control co 
-    INNER JOIN categoria c ON co.id_c = c.id_c";
+    INNER JOIN categoria c ON co.id_c = c.id_c"; //
 
 $registros=array('data'=>array());
 $res=$cx->query($sql);
@@ -55,7 +55,9 @@ if($res->num_rows>0){
 echo json_encode($registros);
 
 
-}else if($action==='delete'){
+break;
+
+case "delete":
 
     if($_POST){
     $id=$_POST['id'];
@@ -75,8 +77,8 @@ $valido['mensaje']="ERROR AL ELIMINAR";
 }
 echo json_encode($valido);
 
-
-}else if($action==='select'){
+break;
+case "select":
     header('Content-Type: text/html; charset=utf-8');
             $valido['success']=array('success'=>false,
             'mensaje'=>"",
@@ -111,9 +113,9 @@ echo json_encode($valido);
 
 echo json_encode($valido);
 
+break;
 
-
-}else if($action==='update'){
+case "update":
 
     if($_POST){
 
@@ -149,6 +151,7 @@ echo json_encode($valido);
 }
 
 echo json_encode($valido);
+break;
 }
 
 }else{
