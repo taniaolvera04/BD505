@@ -47,7 +47,7 @@ break;
 
 
 
-case "delete":
+case "deleteM":
 
     if($_POST){
     $id_m=$_POST['id_m'];
