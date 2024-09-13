@@ -1,0 +1,120 @@
+h4{
+    color: rgb(252, 97, 97);
+    padding: 10px;
+}
+
+#tConsumidas{
+    color: rgb(252, 97, 97);
+    padding: 10px;
+}
+
+
+#hh{
+    color: rgb(80, 139, 176);
+}
+
+#h{
+    color: rgb(248, 115, 137);
+}
+
+.imgCaloria{
+    width: 70px;
+    height: 70px;
+    border-radius: 5%;
+    margin: auto;
+}
+
+#ca{
+    border: 1px solid #ffa5cf;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #ffb9da;
+    box-shadow: 0 2px 4px rgba(148, 142, 142, 0.1);
+    color: white;
+}
+
+#ca2{
+    color: rgb(105, 162, 228);
+    padding: 10px;
+}
+
+#tEjercicio{
+    color: rgb(105, 162, 228);
+    padding: 10px;
+}
+
+
+#ca3{
+    color: rgb(177, 72, 177);
+    padding: 10px;
+}
+
+#tDiferencia{
+    color: rgb(177, 72, 177);
+    padding: 10px;
+}
+
+
+#c1{
+    color: rgb(89, 211, 170);
+}
+
+#c2{
+    color: rgb(215, 119, 245);
+}
+
+
+
+.btn-warning {
+    width: 7em;
+    position: relative;
+    height: 3.5em;
+    border: 3px ridge #c314ea;
+    outline: none;
+    background-color: white;
+    color: rgb(161, 147, 169);
+    transition: 1s;
+    border-radius: 0.5sem;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-warning::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 3%;
+    width: 95%;
+    height: 40%;
+    background-color: #fffbff;
+    transition: 0.5s;
+    transform-origin: center;
+}
+
+.btn-warning::before {
+    content: "";
+    transform-origin: center;
+    position: absolute;
+    top: 80%;
+    left: 3%;
+    width: 95%;
+    height: 40%;
+    background-color: #ffffff;
+    transition: 0.5s;
+}
+
+.btn-warning:hover::before,
+.btn-warning:hover::after {
+    background-color: rgb(241, 188, 241);
+    transform: scale(0)
+}
+
+.btn-warning:hover {
+    box-shadow: inset 0px 0px 25px #bc32fc;
+    background-color: plum;
+    border: 3px ridge #c314ea;
+    color: rgb(101, 19, 94);
+}
+

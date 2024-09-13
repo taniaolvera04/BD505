@@ -11,6 +11,7 @@ switch($action){
 
     case "addMenu":
     $valido['success']=array('success'=>false,'mensaje'=>"");
+    
     $descripcion=$_POST['descripcion']; 
     $costo=$_POST['costo']; 
 

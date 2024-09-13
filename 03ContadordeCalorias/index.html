@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTADOR DE CALORÍAS</title>
+    <!-- Enlaces a Bootstrap -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body class="text-center">
+  
+    <!--TÍTULO NAVBAR-->
+    <nav class="navbar" style="background-color: #cc74ff;">
+        <div class="container-fluid">
+          <h1 class="m-auto w-100 text-white">CONTADOR DE CALORÍAS</h1>
+          <img src="assets/img/kitty.png" alt="Logo" width="65" height="65" style="border-radius:50%;" class="d-inline-block align-text-top m-auto">
+        </div>
+      </nav>
+
+
+  <br>
+    <!-- Botón para abrir el modal -->
+    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#nuevaCaloria">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-patch-plus" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5"/>
+            <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
+          </svg>
+    </button>
+<br><br>
+
+<div class="card text-center w-75 m-auto mt-3 shadow p-2">   
+   <div class="row">
+    <div class="col-md-6 mb-3">
+        <nav class="navbar" style="background-color: #ceecff;">
+            <div class="container-fluid">
+                <h4 class="m-auto" id="hh">ACTIVIDADES</h4>
+            </div>
+        </nav>
+        
+            <div class="text-center" id="listaCalorias"></div>
+        
+    </div>
+
+  
+    <div class="col-md-6 mb-3">
+        <nav class="navbar" style="background-color: #ffd1dc;">
+            <div class="container-fluid">
+                <h4 class="m-auto" id="h">RESUMEN DE CALORÍAS</h4>
+            </div>
+        </nav>
+        <div class="card text-center w-75 m-auto mt-3 shadow p-2">
+              <div class="row">
+                <h4 class="m-auto" id="tConsumidas">0</h4>
+                <h4 class="m-auto">Consumidas</h4>
+                <h4 class="m-auto" id="tEjercicio">0</h4>
+                <h4 class="m-auto" id="ca2">Ejercicio</h4>
+                <h4 class="m-auto" id="tDiferencia">0</h4>
+                <h4 class="m-auto" id="ca3">Diferencia</h4>
+              </div>
+            </div>
+    </div>
+
+
+   </div>
+</div>
+
+
+
+    <!-- Modal que contiene campos para guardar categoría, actividad y calorías -->
+    <div class="modal fade" id="nuevaCaloria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 w-100 m-auto" id="exampleModalLabel">INFORMACIÓN DE CALORÍAS</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p><label for="categoria">CATEGORÍA</label></p>
+                    <select name="categoria" class="form-control m-75 m-auto text-center" id="categoria">
+                        <option value="comida">COMIDA</option>
+                        <option value="ejercicio">EJERCICIO</option>
+                    </select>
+                    <br>
+                    <p><label for="actividad">ACTIVIDAD</label></p>
+                    <input type="text" class="form-control text-center m-auto" id="actividad">
+                    <br>
+                    <p><label for="calorias">CALORÍAS</label></p>
+                    <input type="number" min="1" value="1" class="form-control text-center m-auto" id="calorias">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        Cerrar
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="guardarCalorias()">
+                        Guardar
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy-fill" viewBox="0 0 16 16">
+                            <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
+                            <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal que contiene campos para editar categoría, actividad y calorías -->
+    <div class="modal fade" id="editarCaloria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 w-100 m-auto" id="exampleModalLabel">ACTUALIZAR CALORÍAS</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p><label for="categoria">CATEGORÍA</label></p>
+                    <select name="categoria" class="form-control m-75 m-auto text-center" id="ecategoria">
+                        <option value="comida">COMIDA</option>
+                        <option value="ejercicio">EJERCICIO</option>
+                    </select>
+                    <br>
+                    <p><label for="actividad">ACTIVIDAD</label></p>
+                    <input type="text" class="form-control text-center m-auto" id="eactividad">
+                    <br>
+                    <p><label for="calorias">CALORÍAS</label></p>
+                    <input type="number" min="1" value="1" class="form-control text-center m-auto" id="ecalorias">
+                </div>
+
+                <input type="hidden" id="eindex">
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        Cerrar
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="btn btn-success" id="actualizar">
+                        Actualizar
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-upload-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 0a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 4.095 0 5.555 0 7.318 0 9.366 1.708 11 3.781 11H7.5V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11h4.188C14.502 11 16 9.57 16 7.773c0-1.636-1.242-2.969-2.834-3.194C12.923 1.999 10.69 0 8 0m-.5 14.5V11h1v3.5a.5.5 0 0 1-1 0"/>
+                          </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Scripts de Bootstrap y otros scripts -->
+    <script src="assets/js/bootstrap.bundle.js"></script>
+    <script src="assets/js/sweetalert2.all.min.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
