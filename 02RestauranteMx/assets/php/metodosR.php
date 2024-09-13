@@ -1,20 +1,20 @@
 <?php
 require_once "config.php";
-header('Content-Type: text/html; charset=utf-8');
+
 $valido['success']=array('success'=>false,'mensaje'=>"");
 
 if($_SERVER['REQUEST_METHOD']==='POST'){ 
 
- $action=$_REQUEST['action'];
+ $action=$_REQUEST["action"];
 
 switch($action){
+
     case "addMenu":
-    
-    $a=$_POST['descripcion']; 
-    $b=$_POST['costo']; 
+    $valido['success']=array('success'=>false,'mensaje'=>"");
+    $descripcion=$_POST['descripcion']; 
+    $costo=$_POST['costo']; 
 
-
-    $sql="INSERT INTO menu VALUES (null,'$a','$b')";
+    $sql="INSERT INTO menu VALUES (null,'$descripcion','$costo')";
     if($cx->query($sql)){ 
        $valido['success']=true;
        $valido['mensaje']="SE GUARDÓ CORRECTAMENTE"; 
@@ -29,30 +29,64 @@ echo json_encode($valido);
 break;
 
 
-case "selectAll":
+case "add":
+    
+    $valido['success']=array('success'=>false,'mensaje'=>"");
+    $id=$_POST['id']; 
+    
+    $result = $cx->query("SELECT * FROM orden WHERE id_m = $id");
 
-    $sql = "SELECT * FROM menu"; //
-
-$registros=array('data'=>array());
-$res=$cx->query($sql);
-if($res->num_rows>0){
-    while($row=$res->fetch_array()){
-        $registros['data'][]=array($row[0],$row[1],$row[2]);
+    if ($result->num_rows > 0) {
+        // Si ya existe, actualizar la cantidad
+        $sql = "UPDATE orden SET cantidad = cantidad + 1 WHERE id_m = $id";
+    } else {
+        // Si no existe, insertar nuevo registro
+        $sql = "INSERT INTO orden  VALUES (null,$id,1)";
     }
-}
 
-echo json_encode($registros);
+    if ($cx->query($sql)) {
+        $valido['success'] = true;
+        $valido['mensaje'] = "SE GUARDÓ CORRECTAMENTE";
+    } else {
+        $valido['success'] = false;
+        $valido['mensaje'] = "ERROR AL GUARDAR EN BD";
+    }
+    echo json_encode($valido);
+    break;
 
-break;
 
+
+    case "selectAll":
+        $res = $cx->query("SELECT * FROM menu");
+        $rows = array();
+    
+        while ($row = $res->fetch_assoc()) {
+            $rows[] = $row;
+        }
+    
+        echo json_encode($rows);
+        break;
+    
+
+
+case "selectOrden":
+    $result = $cx->query("SELECT menu.descripcion, menu.costo, orden.cantidad, orden.id_o 
+    FROM menu INNER JOIN orden ON menu.id_m = orden.id_m");
+
+    $rows = array();
+    while ($row = $result->fetch_assoc()) {
+        $rows[] = $row;
+    }
+
+    echo json_encode($rows);
+    break;
 
 
 case "deleteM":
+    $valido['success']=array('success'=>false,'mensaje'=>"");
+    $id=$_POST['id_m'];
 
-    if($_POST){
-    $id_m=$_POST['id_m'];
-
-    $sql="DELETE FROM menu WHERE id_m=$id_m";
+    $sql="DELETE FROM menu WHERE id_m=$id";
     if($cx->query($sql)){
        $valido['success']=true;
        $valido['mensaje']="SE ELIMINÓ CORRECTAMENTE";
@@ -61,49 +95,48 @@ case "deleteM":
        $valido['mensaje']="ERROR AL ELIMINAR EN BD"; 
     }
 
-}else{
-$valido['success']=false;
-$valido['mensaje']="ERROR AL ELIMINAR";
-}
 echo json_encode($valido);
 
 break;
-case "select":
-    header('Content-Type: text/html; charset=utf-8');
-            $valido['success']=array('success'=>false,
-            'mensaje'=>"",
-            'id'=>"",
-            'descripcion'=>"",
-            'costo'=>"",
-            'categoria'=>"");
-            if ($_POST) {
-                $id = $_POST['id'];
-
-                $sql = "SELECT co.id, co.descripcion, co.costo, c.categoria
-                FROM control co
-                INNER JOIN categoria c ON co.id_c = c.id_c
-                WHERE co.id = $id";
 
 
-                $res = $cx->query($sql);
-                $row = $res->fetch_array();
-            
-                $valido['success'] = true;
-                $valido['mensaje'] = "SE ENCONTRÓ GASTO";
-            
-                $valido['id'] = $row[0];
-                $valido['descripcion'] = $row[1];
-                $valido['costo'] = $row[2];
-                $valido['categoria'] = $row[3];
-            } else {
-                $valido['success'] = false;
-                $valido['mensaje'] = "ERROR AL ENCONTRAR GASTO";
-            }
-            
+
+case "deleteO":
+    $valido['success']=array('success'=>false,'mensaje'=>"");
+    $id=$_POST['id_m'];
+
+    $sql="DELETE FROM orden WHERE id_o=$id";
+    if($cx->query($sql)){
+       $valido['success']=true;
+       $valido['mensaje']="SE ELIMINÓ CORRECTAMENTE";
+    }else{
+        $valido['success']=false;
+       $valido['mensaje']="ERROR AL ELIMINAR EN BD"; 
+    }
+
 
 echo json_encode($valido);
 
 break;
+
+
+case "reset":
+    $valido['success']=array('success'=>false,'mensaje'=>"");
+
+    $sql="DELETE FROM orden";
+    if($cx->query($sql)){
+       $valido['success']=true;
+       $valido['mensaje']="SE ELIMINÓ CORRECTAMENTE";
+    }else{
+        $valido['success']=false;
+       $valido['mensaje']="ERROR AL ELIMINAR EN BD"; 
+    }
+
+
+echo json_encode($valido);
+
+break;
+
 
 }
 

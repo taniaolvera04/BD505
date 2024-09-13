@@ -1,7 +1,4 @@
-var platillos = JSON.parse(localStorage.getItem("platillos")) || [];
-var ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
 var propina=0, subtotal=0, total=0, porcentaje=0;
-
 
 
 const guardarItem = async() => {
@@ -39,107 +36,98 @@ const guardarItem = async() => {
 
 
 const cargarPlatillos = async() => {
-    try {
         const datos2 = new FormData();
         datos2.append("action", "selectAll");
         let respuesta = await fetch("assets/php/metodosR.php", { method: 'POST', body: datos2 });
-        let json = await respuesta.json();
+        let res = await respuesta.json();
 
-        let gastosHTML = ``;
-        let index=0;
-   
-    let tablaHTML = ``;
-    json.data.forEach(r => {
-        tablaHTML += `
+    let menuHTML = ``;
+   res.map(m => {
+        menuHTML += `
         <tr>
          <td class="text-center">
             <div class="d-flex justify-content-center align-items-center">
-            <button type="button" onclick="add(${r[0]})" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-             ${r[1]}
+            <button type="button" onclick="add(${m.id_m})" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            ${m.descripcion}
             </button>
-            <button class="btn btn-info ms-2">$${parseFloat(r[2]).toFixed(2)}</button>
-            <button class="btn btn-danger ms-2" style="border-radius: 48%;" onclick="delP(${r[0]})"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+            <button class="btn btn-info ms-2">$${parseFloat(m.costo).toFixed(2)}</button>
+            <button class="btn btn-danger ms-2" style="border-radius: 48%;" onclick="delP(${m.id_m})"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
             <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
           </svg></button>
             </div>
         </td>
     </tr>
         `;
-        
-        index++;
+
     });
-    document.getElementById("listaPlatillos").innerHTML = tablaHTML;
+    document.getElementById("listaPlatillos").innerHTML = menuHTML;
     cargarOrdenes();
-} catch (ex) {
-    alert(ex);
-}
-}
 
-
-const add =async (indexMenu) => {
-    let datos=new FormData();
-    datos.append("id_o",indexMenu);
-    datos.append("action","addMenu");
-    
-    const respuesta=await fetch("assets/php/metodosR.php",{method:'POST',body:datos});
-    let json=await respuesta.json();
-
-    cargarOrdenes();
 }
 
 
 
-const cargarOrdenes = async() => {
+const add = async (indexMenu) => {
+    let datos = new FormData();
+    datos.append("action", "add");
+    datos.append("id", indexMenu);
+
+    const respuesta = await fetch("assets/php/metodosR.php", { method: 'POST', body: datos });
+    let res = await respuesta.json();
+    cargarOrdenes(); // Cargar las órdenes después de agregar un platillo
+};
+
+
+
+const cargarOrdenes = async () => {
     subtotal = 0;
-    let indexOrden = 0;
-
-    let datos=new FormData();
-    datos.append("action","selectOrden");
-    
-    let respuesta=await fetch("assets/php/metodosR.php",{method:'POST',body:datos});
-    let json=await respuesta.json();
-    
-  
     let divOrden = document.getElementById("orden");
+
+    let datos = new FormData();
+    datos.append("action", "selectOrden");
+
+    let respuesta = await fetch("assets/php/metodosR.php", { method: 'POST', body: datos });
+    let res = await respuesta.json();
+
     let ordenHTML = ``;
-    
-    if (json.data.length === 0) {
+
+    if (res.length === 0) {
         divOrden.innerHTML = `<h4 class="text-center"><b>NO HAY ORDENES</b></h4>`;
         document.getElementById("s").innerHTML = `$ 0.00`;
         document.getElementById("p").innerHTML = `$ 0.00`;
         document.getElementById("t").innerHTML = `$ 0.00`;
     } else {
-        json.data.map(o => {
+        res.map(o => {
             ordenHTML += `
             <div class="list-group-item list-group-item-action border my-2">
                 <div class="list-group-item list-group-item-action border my-2">
-                    <h5 class="aling-middle">${o.descripciom}</h5>
+                    <h5 class="align-middle">${o.descripcion}</h5>
                 </div>
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="align-bottom">Cantidad: <b>${o.cantidad}</b></h5>
                     <h5 class="align-middle"><b>$ ${parseFloat(o.costo * o.cantidad).toFixed(2)}</b></h5>
-                    <button class="btn btn-danger my-1" onclick="del(${o.indexOrden})"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                  </svg></button>
+                    <button class="btn btn-danger my-1" onclick="delO(${o.id_o})">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
             `;
-            indexOrden++;
-            subtotal += (parseFloat(o.costo) * parseFloat(o.cantidad));
+            subtotal += parseFloat(o.costo) * parseFloat(o.cantidad);
         });
-        
+
         divOrden.innerHTML = ordenHTML;
         propina = (porcentaje / 100) * subtotal;
         document.getElementById("s").innerHTML = `$ ${subtotal.toFixed(2)}`;
         document.getElementById("p").innerHTML = `$ ${propina.toFixed(2)}`;
         document.getElementById("t").innerHTML = `$ ${(subtotal + propina).toFixed(2)}`;
-        calcularPropina();
     }
-}
+};
+
 
 
 const delP = async(index) => {
-    platillos = JSON.parse(localStorage.getItem("platillos")) || [];
     Swal.fire({
         icon: "question",
         title: "¿Estás seguro de eliminar este platillo?",
@@ -192,7 +180,7 @@ const delO=async(index)=>{
         if (result.isConfirmed) {
 
             let datos=new FormData();
-            datos.append("id_o",indexMenu);
+            datos.append("id_m",indexMenu);
             datos.append("action","deleteO");
             
             const respuesta=await fetch("assets/php/metodosR.php",{method:'POST',body:datos});
@@ -212,18 +200,28 @@ const delO=async(index)=>{
 const terminarP=()=>{
     Swal.fire({
         icon:"question",
-        title: "¿Estás seguro de terminar el pedido?",
+        title: "¿Estás seguro de guardar orden?",
         showDenyButton: true,
-        confirmButtonText: "Si, eliminar",
+        confirmButtonText: "Si, guardar",
         denyButtonText: "No estoy seguro"
-    }).then((result) => {
+    }).then(async(result) => {
         if (result.isConfirmed) {
-            localStorage.removeItem("ordenes"); 
-            subtotal=0;
-            propina=0;
-            total=0;
+
+            let datos=new FormData();
+            datos.append("action","reset");
+            
+            const respuesta=await fetch("assets/php/metodosR.php",{method:'POST',body:datos});
+            let json=await respuesta.json();
+            if(json.success==true){
+                subtotal=0;
+                propina=0;
+                total=0;
+                Swal.fire("RESET EXITOSO", "", "success");
+            }else{
+                Swal.fire("Error al eliminar", "", "error");
+            }
             cargarOrdenes();
-            Swal.fire("PEDIDO TERMINADO EXITOSAMENTE", "", "success");
+           
         }
     });
 }
@@ -232,18 +230,28 @@ const terminarP=()=>{
 const cancelar=()=>{
     Swal.fire({
         icon:"question",
-        title: "¿Estás seguro de cancelar el pedido?",
+        title: "¿Estás seguro de cancelar?",
         showDenyButton: true,
-        confirmButtonText: "Si, eliminar",
+        confirmButtonText: "Si, cancelar",
         denyButtonText: "No estoy seguro"
-    }).then((result) => {
+    }).then(async(result) => {
         if (result.isConfirmed) {
-            localStorage.removeItem("ordenes"); 
-            subtotal=0;
-            propina=0;
-            total=0;
+
+            let datos=new FormData();
+            datos.append("action","reset");
+            
+            const respuesta=await fetch("assets/php/metodosR.php",{method:'POST',body:datos});
+            let json=await respuesta.json();
+            if(json.success==true){
+                subtotal=0;
+                propina=0;
+                total=0;
+                Swal.fire("RESET EXITOSO", "", "success");
+            }else{
+                Swal.fire("Error al eliminar", "", "error");
+            }
             cargarOrdenes();
-            Swal.fire("PEDIDO CANCELADOS EXITOSAMENTE", "", "success");
+           
         }
     });
 }
