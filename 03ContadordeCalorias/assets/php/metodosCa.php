@@ -13,6 +13,7 @@ switch($action){
     $b=$_POST['actividad']; 
     $c = $_POST['caloria']; 
 
+    
     $sql="INSERT INTO calorias VALUES (null,'$a','$b','$c')";
     if($cx->query($sql)){ 
        $valido['success']=true;

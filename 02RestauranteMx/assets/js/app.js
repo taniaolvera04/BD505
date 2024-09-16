@@ -137,7 +137,7 @@ const delP = async(index) => {
     }).then(async(result) => {
         if (result.isConfirmed) {
             let gastoid = new FormData();
-            gastoid.append('id_m', index);
+            gastoid.append('id', index);
             gastoid.append('action','deleteM');
 
             let respuesta = await fetch("assets/php/metodosR.php", {method: 'POST',body: gastoid});
@@ -145,6 +145,8 @@ const delP = async(index) => {
 
             if (json.success == true) {
                 Swal.fire("EL GASTO SE ELIMINÓ", "", "success");
+                cargarPlatillos();
+                cargarOrdenes();
             }else{
                 Swal.fire({
                     title: "ERROR", text: json.mensaje, icon: "error"});
@@ -152,7 +154,6 @@ const delP = async(index) => {
 
             Swal.fire("El platillo se eliminó exitosamente", "", "success");
             cargarPlatillos();
-            cargarOrdenes();
         }
     });
 }
@@ -180,7 +181,7 @@ const delO=async(index)=>{
         if (result.isConfirmed) {
 
             let datos=new FormData();
-            datos.append("id_m",indexMenu);
+            datos.append("id_m",index);
             datos.append("action","deleteO");
             
             const respuesta=await fetch("assets/php/metodosR.php",{method:'POST',body:datos});

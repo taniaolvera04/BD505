@@ -85,7 +85,9 @@ case "selectOrden":
 
 case "deleteM":
     $valido['success']=array('success'=>false,'mensaje'=>"");
-    $id=$_POST['id_m'];
+    $id=$_POST['id'];
+
+    $cx->query("DELETE FROM orden WHERE id_m = $id");
 
     $sql="DELETE FROM menu WHERE id_m=$id";
     if($cx->query($sql)){
@@ -96,9 +98,8 @@ case "deleteM":
        $valido['mensaje']="ERROR AL ELIMINAR EN BD"; 
     }
 
-echo json_encode($valido);
-
-break;
+    echo json_encode($valido);
+    break;
 
 
 
